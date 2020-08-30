@@ -1,7 +1,7 @@
 var express = require('express');
 const request = require('request');
 var app = express();
-
+const port = process.env.PORT || 8000;
 const { array } = require('yargs');
 const controller = require('./controller/controller');
 app.set('view engine','ejs');
@@ -14,5 +14,5 @@ app.use('/fonts',express.static('fonts'));
 controller(app);
 
 
-app.listen(8000);
+app.listen(port);
 console.log('server running on 8000');
