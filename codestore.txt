@@ -1,0 +1,189 @@
+var express = require('express');
+const request = require('request');
+var app = express();
+const bodyParser = require('body-parser');
+const { array } = require('yargs');
+ const urlencodedParser = bodyParser.urlencoded({extended:false});
+
+app.set('view engine','ejs');
+app.use('/Styles',express.static('Styles'));
+app.use('/fonts',express.static('fonts'));
+
+app.get('/',function(req,res){
+    var lagosweather_data; var cityNameErr=[];
+    request({
+        url:`https://api.openweathermap.org/data/2.5/weather?q=Lagos,Nigeria&APPID=945a796b34f2c157e96bf554ea05ecec`,
+        json:true
+    },(error,response,body)=>{
+     // I ASSUME THAT THERES NO GOING TO BE ERROR IN LOCATING LAGOS STATE, OTHER
+     // STATES ARE LIABLE TO ERROR.
+        if(error){
+            console.log('cant connect to the site');
+        }
+            // coordinates details+
+        else if (body.cod === 200){
+            var lagos_long = body.coord.lon;
+            var lagos_lat = body.coord.lat;
+            // weather details
+            var lagosweatherId = body.weather[0].id;
+            var lagosweatherMain = body.weather[0].main;
+            var lagosweatherDesc = body.weather[0].description;
+            var lagosweatherIcon = body.weather[0].icon;
+            var lagosvisibility = body.visibility;
+            // MAIN weather conditions
+            var lagoslocation_temp = body.main.temp;
+            var lagoslocation_pressure = body.main.pressure;
+            var lagostemp_feels_like = body.main.feels_like;
+            var lagostemp_min = body.main.temp_min;
+            var lagostemp_max = body.main.temp_max;
+            var lagoshumidity = body.main.humidity;
+            // Country details...
+            var lagoslocation_country = body.sys.country;
+            var lagoscity_Name = body.name;
+            var lagoswindspeed = body.wind.speed;
+
+             lagosweather_data = {
+                //cordinates details
+                lagos_long:lagos_long,
+                lagos_lat:lagos_lat,
+                // weather descriptions and others...
+                lagosweatherId:lagosweatherId,
+                lagosweatherMain:lagosweatherMain,
+                lagosweatherDesc:lagosweatherDesc,
+                lagosweatherIcon:lagosweatherIcon,
+                lagosvisibility:lagosvisibility,
+                // Main weather conditions
+                lagoslocation_temp:lagoslocation_temp,
+                lagoslocation_pressure:lagoslocation_pressure,
+                lagostemp_feels_like:lagostemp_feels_like,
+                lagostemp_min:lagostemp_min,
+                lagostemp_max:lagostemp_max,
+                lagoshumidity:lagoshumidity,
+                // country details...
+                lagoswindspeed:lagoswindspeed,
+                lagoslocation_country:lagoslocation_country,
+                lagoscity_Name:lagoscity_Name
+            
+            }
+           res.render('index',{cityNameErr:[],lagosweather_data:lagosweather_data});
+            console.log(lagosweather_data); 
+
+        }
+    } )
+
+      
+app.post('/',urlencodedParser,function(req,res){
+       var address = req.body.cityName;
+       request({
+        url:`https://api.openweathermap.org/data/2.5/weather?q=${address}&APPID=945a796b34f2c157e96bf554ea05ecec`,
+        json:true
+    },(error,response,body)=>{
+      //  var serverErr='';
+        if(error){
+            var serverErr ='Unable to connect to openweathermap Server';
+            cityNameErr.push(serverErr);
+            res.render('index',{cityNameErr:cityNameErr});
+            console.log(cityNameErr);
+
+        }
+        else if(body.message === 'city not found' ){
+            console.log('Unable to find the address');
+            cityAddressErr = 'Unable to find the address';
+            cityNameErr.push(cityAddressErr);
+            res.render('index',{cityNameErr:cityNameErr});
+        }
+        else if(body.cod === 200){
+            var lagos_long = body.coord.lon;
+            var lagos_lat = body.coord.lat;
+            // weather details
+            var lagosweatherId = body.weather[0].id;
+            var lagosweatherMain = body.weather[0].main;
+            var lagosweatherDesc = body.weather[0].description;
+            var lagosweatherIcon = body.weather[0].icon;
+            var lagosvisibility = body.visibility;
+            // MAIN weather conditions
+            var lagoslocation_temp = body.main.temp;
+            var lagoslocation_pressure = body.main.pressure;
+            var lagostemp_feels_like = body.main.feels_like;
+            var lagostemp_min = body.main.temp_min;
+            var lagostemp_max = body.main.temp_max;
+            var lagoshumidity = body.main.humidity;
+            // Country details...
+            var lagoslocation_country = body.sys.country;
+            var lagoscity_Name = body.name;
+            var lagoswindspeed = body.wind.speed;
+            lagosweather_data = {
+                //cordinates details
+                lagos_long:lagos_long,
+                lagos_lat:lagos_lat,
+                // weather descriptions and others...
+                lagosweatherId:lagosweatherId,
+                lagosweatherMain:lagosweatherMain,
+                lagosweatherDesc:lagosweatherDesc,
+                lagosweatherIcon:lagosweatherIcon,
+                lagosvisibility:lagosvisibility,
+                // Main weather conditions
+                lagoslocation_temp:lagoslocation_temp,
+                lagoslocation_pressure:lagoslocation_pressure,
+                lagostemp_feels_like:lagostemp_feels_like,
+                lagostemp_min:lagostemp_min,
+                lagostemp_max:lagostemp_max,
+                lagoshumidity:lagoshumidity,
+                // country details...
+                lagoswindspeed:lagoswindspeed,
+                lagoslocation_country:lagoslocation_country,
+                lagoscity_Name:lagoscity_Name
+            
+            }
+
+            res.render('index',{lagosweather_data:lagosweather_data});
+            console.log(lagosweather_data);  
+    
+           
+        }
+       
+    } )
+
+
+
+
+     
+    
+});
+
+
+});
+
+// This is handling the weather search for other states....
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.listen(8000);
+console.log('server running on 8000');

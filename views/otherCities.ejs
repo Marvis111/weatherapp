@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<script src="jquery-ui.min.js"></script>
+	<script  src="jquery-ui-1.12.1/external/jquery/jquery.js"></script>
+	<meta charset="utf-8">
+	<meta name="Author" content="Oyegbile Marvellous">
+	<meta http-equiv="X-UA-Compatible" content="ie-edge">
+ 	<link rel="stylesheet" type="text/css" href="Styles/index.css">
+   <script  src="jquery-ui-1.12.1/jquery-ui.js"></script>
+	<link rel="stylesheet" type="text/css" href="jquery-ui-1.12.1/jquery-ui.min.css">
+ 	<link rel="stylesheet" href="fonts/icomoon/style.css">
+ 	<script type="text/javascript" src="Styles/index.js"></script>
+	<title>Marv-Weather | Weather</title>
+
+</head>
+<body>
+	<div class="mobile_nav_div" id="mobile_nav_div">
+		<div class="close_btn">
+			<label id="close_btn" onclick="closeMenu()"><b>&times;</b></label>
+		</div>
+		<ul class="mobiele-nav-ul">
+		<li><a href="#">Home</a></li>
+		<li><a href="#">News</a></li>
+		<li><a href="#">Updates</a></li>
+	</ul>
+	</div>
+
+
+<nav class="main-nav">
+	<label for="check" id="menu_bars" onclick="displayMenu()" class="menu_bars">
+		<b><li class="icon-bars"></li></b>
+	</label>
+  
+	<label id="search_bar" onclick="displaySearch()" class="search_bar">
+		<b><li class="icon-search"></li></b>
+	</label>
+		<ul class="main-nav-ul">
+		<li><a href="#">Home</a></li>
+		<li><a href="#">News</a></li>
+		<li><a href="#">Updates</a></li>
+	</ul>
+
+	<div class="site_logo">
+		<h5>WeCloud</h5>
+	</div>
+
+	
+</nav>
+<!-- Search in mobile mode-->
+<section>
+	<div class="mobile_search_div" id="mobile_search_div">
+		<form id="mobilesearchform" method="POST">
+			<div class="mobile_search-input-div">
+				<input type="search" name="cityName" placeholder="Seach a city" required>
+			</div>
+		</form>
+		
+	</div>
+</section>
+
+<!-- Search in desktop mode-->
+<section>
+	<div class="city_search_form">
+		<form class="search_form" method="POST" >
+			<div class="search-input-div">
+				<input type="search" name="cityName" placeholder="Seach a city" required>
+			</div>
+			<div class="search-div">
+				<input type="submit" name="citySearchSubmitBtn" value="search">
+			</div>
+		</form>
+	</div>
+
+</section>
+
+<!-- This should handle the map section-->
+<div class="location-map">
+	<h5>This is the map of <%= lagosweather_data.lagoscity_Name %> </h5>
+	<h6>More data about the weather in <%=lagosweather_data.lagoscity_Name %>  below.</h6>
+</div>
+<!-- im gonna include all the necessary details here -->
+<div class="weather_details">
+	<div class="city_name">
+		<h4><li class="icon-pin_drop" style="font-size: 24px;margin-top: 10px;"><b><%=lagosweather_data.lagoscity_Name %>,<%=lagosweather_data.lagoslocation_country %></b></li></h4>
+		<h6><script>
+			date();
+		</script></h6>
+		<ul>
+			<li><h6>Latitude:<b><%= lagosweather_data.lagos_lat %>&deg;</b></h6></li> 
+			<li><h6>Longitude:<b><%= lagosweather_data.lagos_long %>&deg;</b></h6></li> 
+		</ul>
+	</div>
+
+	<div class="temperature_div">
+
+		<h2 style="margin-bottom: 30px;margin-top: 10px; font-size: 24px;" ><b class="icon-pin_drop" ></b><%= lagosweather_data.lagoslocation_temp %>&deg;F</h2>
+		<ul>
+			<li><h6>Max. Temp:<b><%= lagosweather_data.lagostemp_max %>&deg;F</b></h6></li> 
+			<li><h6>Min. Temp:<b><%= lagosweather_data.lagostemp_min %>&deg;F</b></h6></li> 
+		</ul>
+		
+
+	<p><b> Feels like <%= lagosweather_data.lagostemp_feels_like %>&deg;C. <%= lagosweather_data.lagosweatherDesc %>. Light breeze.</b></p>
+	<ul>
+		<li ><b class="icon-near_me"></b><%= lagosweather_data.lagoswindspeed %>m/s E</li>
+		<li ><b class="icon-near_me"></b><%= lagosweather_data.lagos_pressure %>hPa</li>
+		<li ><b >Humidity:</b><%= lagosweather_data.lagoshumidity %>%</li>
+		<li ><b>UV:6</b></li>
+		<li ><b >Dew point</b>:20&deg;C</li>
+		<li ><b >Visibility: </b><%= lagosweather_data.lagosvisibility %>m</li>
+	</ul>
+		
+	</div>
+	
+
+
+</div>
+
+
+
+
+
+</body>
+</html>
