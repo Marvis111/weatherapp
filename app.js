@@ -1,7 +1,7 @@
 var express = require('express');
 const request = require('request');
 var app = express();
-const port = 8000;
+const port = process.env.PORT || 8000;
 const { array } = require('yargs');
 const controller = require('./controller/controller');
 app.set('view engine','ejs');
